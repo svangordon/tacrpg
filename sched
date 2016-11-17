@@ -1,0 +1,47 @@
+Goal:
+
+build a simple strategy game within one week. You're shooting for basically a clone of The Banner Saga. Grid-based, turn-based, with that pleasant system of armor vs hp. Oh, and Str being HP. liked that too. Rip that too.
+
+MVP:
+
+-- Display a map with different units on it
+  -- Map, units, grid
+
+-- Clickable map to move units around.
+
+-- Different units
+
+-- Rudimentary computer opponent
+
+TODO:
+-- COMPLETE 11/9: Basic, static map, which just displays a grid of boxes
+-- COMPLETE 11/9: Make tiles capable of displaying different backgrounds depending on 'type'
+-- TODO 11/9: Create a unit reducer, or other way to store data about units on the map
+  -- Probably related is going to be some actions:
+    -- Unit actions are probably going to be fairly important here. attackUnit,
+    moveUnit, etc, are going to be unit actions, I think.
+    -- prepMap or something like it might be one of them; like update the object that
+    the mapComponent reads off of. More likely, though, is going to be having the
+    map container watch the units and when those change fire the event to redraw
+    the map itself.
+  --COMPLETED 11/11
+
+-- TODO 11/12: Have movePath sent to the turnReducer and then dispatched with
+a 'processTurn' action.
+
+-- TODO 11/12: Have turns be resolved through a button
+
+-- TODO 11/12: Include actions, most importantly attack
+
+-- TODO 11/12: The BattleMap should be reading off one (and only one!) master map
+that is calculated by the bMap container by pulling together a bunch of stuff out
+of props and then held in its state
+
+Needed:
+
+-- Attack Resolution
+-- Nice looking gui
+
+TODO: Rip stats, combat calculations from FE. Weapons weight? prolly not.
+
+Next

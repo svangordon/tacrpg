@@ -1,0 +1,71 @@
+const unit = {
+
+}
+
+const state = {
+  map: {
+    show: true,
+    data: []
+  },
+  units: {
+    human: [],
+    monster: []
+  }
+}
+
+const unit = {
+  name: 'hero',
+  displayName: 'Hero Man',
+  stats: {
+    str: {
+      current: 6, // current like in the battle
+      val: 8,
+      base: 11,
+      max: 12,
+      fixed: false,
+      replenish: false
+    },
+    armor: {
+      current: 9,
+      val: 10,
+      base: 8,
+      max: 11,
+      fixed: false,
+      replenish: true
+    },
+    will: {
+      current: 5,
+      val: 5,
+      base: 5,
+      max: 13,
+      fixed: false,
+      replenish: true
+    },
+    exert: {
+      current: 2,
+      val: 2,
+      base: 2,
+      max: 3,
+      fixed: true,
+      replenish: false
+    },
+    break: {
+      current: 1,
+      val: 1,
+      base: 1,
+      max: 2,
+      fixed: true,
+      replenish: false
+    }
+  },
+  abilities: {
+    active: 'flail',
+    passive: 'shieldWall'
+  },
+  rank: {
+    current: 1,
+    progression: [29, 30, 31]
+  },
+  movement:4,
+  item: null
+}

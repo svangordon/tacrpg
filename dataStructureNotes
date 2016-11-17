@@ -1,0 +1,32 @@
+Data structures:
+  * Activities: One of the things that the player can select. Contains a number
+  of possible events.
+  activity: {
+    name: String,
+    events: [{}],
+    id: Number
+  }
+
+  * Events: Things that could occur during / at the activity. contains criteria
+  and a scene
+  event: {
+    label: 'study',
+    scene: studyScene,
+    criteria: {
+      type: 'default'
+    }
+  }
+
+  * Scenes: Contains what will actually be shown on the screen. Contains text nodes
+  and decision nodes.
+  scene: {
+    label: 'study',
+    scene:
+  }
+
+
+  * Text Node: One or more panels of text / images. Can link to/from text/decision
+  nodes. Need to have some kind of constructor for these, probably.
+
+  * Decision Node: A place where a player can make a choice. Links to/from text and
+  decision nodes.
