@@ -1,5 +1,5 @@
 import { UNIT_ACTIONS, TURN_ACTIONS } from '../actions/actions'
-import { resolveAttack, moveUnit, updateUnit, setActiveUnit } from '../actions/unitActions'
+import { resolveAttack, moveUnit, updateUnit, setActiveUnit, killUnit } from '../actions/unitActions'
 import { setMoveSquares, finishTurn, setActiveUnitMoved, setAttackSquares, setAttackTarget, finishUnit } from '../actions/turnActions'
 import { coords } from '../utilities/UtilityContainer'
 import PF from 'pathfinding'
@@ -13,9 +13,48 @@ export const unitMiddleware = store => next => action => {
       throw new Error('invalid attack target')
     }
     delete defender.valid
-    store.dispatch(updateUnit(Object.assign({}, defender, {
-      hp: defender.hp - 1
-    })))
+    const speedDiff = attacker.speed - defender.speed
+    const attackerDamage = attacker.strength - defender.armor
+    const defenderDamage = defender.strength - attacker.armor
+
+    let attackerDodge = speedDiff > 0 && Math.random() < speedDiff / 10
+    let defenderDodge = speedDiff < 0 && Math.random() < -speedDiff / 10
+    if (!defenderDodge) {
+      defender.hp = defender.hp - attackerDamage
+    }
+    if (defender.hp >= 0) {
+      attacker.hp = attacker.hp - defenderDamage
+    }
+    if (defender.hp < 0) {
+      console.log(attacker.name, 'killed', defender.name)
+      attacker.exp = attacker.exp + 1
+      store.dispatch(killUnit(defender))
+    }
+    if (attacker.hp < 0) {
+      console.log(defender.name, 'killed', attacker.name)
+      defender.exp = defender.exp + 1
+      store.dispatch(killUnit(attacker))
+    }
+    if (defender.hp > 0) {
+      store.dispatch(updateUnit(defender))
+    }
+    if (attacker.hp > 0) {
+      store.dispatch(updateUnit(defender))
+    }
+    // 
+    // const missChance = Math.min(Math.max(defender.speed - attacker.speed, 0) / 10, 0.9)
+    // const damage = attacker.strength - defender.armor
+    // if (missChance < Math.random()) {
+    //   console.log('hit')
+    //   defender.hp = defender.hp - damage
+    //   if (defender.hp < 0) {
+    //     console.log(attacker.name, 'killed', defender.name)
+    //
+    //   }
+    // }
+    // store.dispatch(updateUnit(Object.assign({}, defender, {
+    //   hp: defender.hp - 1
+    // })))
   }
   next(action)
 

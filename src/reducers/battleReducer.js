@@ -227,6 +227,12 @@ function battle(state = initialState, action) {
           turnCount: action.finishTurn ? state.turnCount : state.turnCount + 1
       })
     }
+    case UNIT_ACTIONS.KILL_UNIT: {
+      const newUnits = state.units.filter(unit => {action.unitId !== unit.id})
+      return Object.assign({}, state, {
+        needsSync: true
+      })
+    }
     default:
       return state
   }

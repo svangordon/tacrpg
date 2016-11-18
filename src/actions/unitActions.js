@@ -41,3 +41,10 @@ export function finishUnit(unit) {
     unit
   }
 }
+
+export function killUnit(unitId) {
+  return {
+    type: UNIT_ACTIONS.KILL_UNIT,
+    unitId
+  }
+}
