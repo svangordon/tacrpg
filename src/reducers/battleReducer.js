@@ -32,7 +32,19 @@ initialState.terrainmap = constructedMap
 // idsByOwner.forEach((ids, i) => {initialState.order})
 function battle(state = initialState, action) {
   switch (action.type) {
-    case TURN_ACTIONS.FINISH_TURN:
+    case TURN_ACTIONS.CANCEL_MOVE: {
+      return Object.assign({}, state, {
+        activeUnit: null,
+        activeUnitMoved: false,
+        attackTarget: {},
+        attackSquares: null,
+        movePath: null,
+        moveSquares:null,
+        needsSync: true,
+        showAttack: false
+      })
+    }
+    case TURN_ACTIONS.FINISH_TURN: {
       return Object.assign({}, state,
       {
         activePlayer: (state.activePlayer + 1) % 2,
@@ -47,33 +59,130 @@ function battle(state = initialState, action) {
         showAttack: false,
         turnCount: state.turnCount + 1
       })
-    case TURN_ACTIONS.SET_MOVE_PATH:
-      return Object.assign({}, state, {
-        movePath: action.movePath,
-        needsSync: true
-      })
-    case TURN_ACTIONS.CANCEL_MOVE:
-      return Object.assign({}, state, {
-        activeUnit: null,
-        activeUnitMoved: false,
-        attackTarget: {},
-        attackSquares: null,
-        movePath: null,
-        moveSquares:null,
-        needsSync: true,
-        showAttack: false
-      })
-    case TURN_ACTIONS.SET_ATTACK:
+    }
+
+    case TURN_ACTIONS.SET_ATTACK: {
       return Object.assign({}, state, {
         attackTarget: action.attackTarget,
         needsSync: true
       })
+    }
+    case TURN_ACTIONS.SET_MOVE_PATH: {
+      return Object.assign({}, state, {
+        movePath: action.movePath,
+        needsSync: true
+      })
+    }
+    case UNIT_ACTIONS.SYNC_UNITS: {
+
+      const t1 = performance.now()
+      const newmap = state.basemap.map(tile => Object.assign({}, tile, {layers: Object.assign({}, tile.layers)}))
+      state.units.forEach(unit => {
+        const unitPosition = state.activeUnit && state.activeUnit.id === unit.id ? state.activeUnit.position : unit.position
+        newmap[unitPosition].layers.unit = {
+          data: unit.sprite,
+          name: 'unit',
+          offset: tileGetter(unit.sprite),
+          opacity: 1
+        }
+        if (state.finishedUnits[unit.id]) { // finished move
+          newmap[unitPosition].layers.moveStatus = {
+            data: 299,
+            name: 'square',
+            offset: tileGetter(299),
+            opacity: 1
+          }
+        }
+      })
+      if (state.moveSquares && !state.activeUnitMoved) {
+        state.moveSquares.forEach((moveSquare, i) => {
+          if (moveSquare.valid) {
+            newmap[i].layers.move = { // moveRange
+              data: 298,
+              name: 'square',
+              offset: tileGetter(298),
+              opacity: 0.5
+            }
+          }
+        })
+      }
+      if (state.movePath && !state.showAttack) {
+        state.moveSquares[state.movePath].path.forEach((moveSquare, i) => {
+          newmap[moveSquare].layers.move = { // movePath
+            data: 298,
+            name: 'square',
+            offset: tileGetter(298),
+            opacity: 1
+          }
+        })
+      }
+      if (state.showAttack && !state.attackTarget.valid && state.attackSquares) {
+        state.attackSquares.forEach((attackSquare, i) => {
+          if (attackSquare.valid) {
+            newmap[i].layers.attack = {
+              data: 298,
+              name: 'square',
+              offset: tileGetter(297),
+              opacity: 0.5
+            }
+          }
+        })
+      }
+      if (state.attackTarget.position && state.attackSquares[state.attackTarget.position].valid) {
+        newmap[state.attackTarget.position].layers.attack = {
+          data: 298,
+          name: 'square',
+          offset: tileGetter(297),
+          opacity: 1
+        }
+      }
+      const t2 = performance.now()
+      console.log('original sync took', t2 - t1, 'ms')
+
+      // const t3 = performance.now()
+      // const altmap = state.basemap.map(tile => Object.assign({}, tile, {layers: Object.assign({}, tile.layers)}))
+      // const limit = state.moveSquares.length
+      // for (let i = 0; i < limit; i++) {
+      //   if (state.moveSquares[i].valid) {
+      //     altmap[i].layers.square = { // moveRange
+      //       data: 298,
+      //       name: 'square',
+      //       offset: tileGetter(298),
+      //       opacity: 0.5
+      //     }
+      //   }
+      //
+      // }
+      // const t4 = performance.now()
+      //
+      // console.log('new sync took', t4 - t3, 'ms')
+      // console.log('newSync was ==', (t2 - t1) - (t4 - t3), 'ms faster')
+      return Object.assign({}, state, {
+        needsSync: false,
+        terrainmap: newmap
+      })
+    }
+
     case TURN_ACTIONS.TOGGLE_ATTACK_RANGE: {
       return Object.assign({}, state, {
         needsSync: true,
         showAttack: action.showValue === undefined ? !state.showAttack : action.showValue
       })
     }
+
+    case UNIT_ACTIONS.UPDATE_UNIT:
+      return Object.assign({}, state, {
+        needsSync: true,
+        units: state.units.map(unit => {
+          if (unit.id === action.unit.id) {
+            return action.unit
+          } else {
+            return unit
+          }
+        })
+      })
+
+
     case UNIT_ACTIONS.MOVE_UNIT: {
       // This can be replaced w/ an action that's intercepted by mw, and dispatches the update unit action
       // console.log('reducer stat ==', state, 'action', action)
@@ -89,89 +198,6 @@ function battle(state = initialState, action) {
         })
       })
     }
-    case UNIT_ACTIONS.UPDATE_UNIT:
-      return Object.assign({}, state, {
-        needsSync: true,
-        units: state.units.map(unit => {
-          if (unit.id === action.unit.id) {
-            return action.unit
-          } else {
-            return unit
-          }
-        })
-      })
-
-    case UNIT_ACTIONS.SYNC_UNITS: {
-      const newmap = state.basemap.slice().map(tile => Object.assign({}, tile, {layers: Object.assign({}, tile.layers)}))
-
-      state.units.forEach(unit => {
-        const unitPosition = state.activeUnit && state.activeUnit.id === unit.id ? state.activeUnit.position : unit.position
-        newmap[unitPosition].layers.unit = {
-          data: unit.sprite,
-          name: 'unit',
-          offset: tileGetter(unit.sprite),
-          opacity: 1
-        }
-        if (state.finishedUnits[unit.id]) {
-          newmap[unitPosition].layers.moveStatus = {
-            data: 299,
-            name: 'moveStatus',
-            offset: tileGetter(299),
-            opacity: 1
-          }
-        }
-      })
-      if (state.moveSquares && !state.activeUnitMoved) {
-        state.moveSquares.forEach((moveSquare, i) => {
-          if (moveSquare.valid) {
-            newmap[i].layers.move = {
-              data: 298,
-              name: 'move',
-              offset: tileGetter(298),
-              opacity: 0.5
-            }
-          }
-        })
-      }
-      if (state.movePath && !state.showAttack) {
-        state.movePath.forEach((moveSquare, i) => {
-          newmap[moveSquare].layers.move = {
-            data: 298,
-            name: 'move',
-            offset: tileGetter(298),
-            opacity: 1
-          }
-        })
-      }
-      if (state.showAttack && !state.attackTarget.valid && state.attackSquares) {
-        state.attackSquares.forEach((attackSquare, i) => {
-          if (attackSquare.valid) {
-            newmap[i].layers.attack = {
-              data: 298,
-              name: 'attack',
-              offset: tileGetter(297),
-              opacity: 0.5
-            }
-          }
-        })
-      }
-      if (state.attackTarget.position && state.attackSquares[state.attackTarget.position].valid) {
-        newmap[state.attackTarget.position].layers.attack = {
-          data: 298,
-          name: 'attack',
-          offset: tileGetter(297),
-          opacity: 1
-        }
-      }
-      // if (state.showAttack && state.attackTarget) {
-      //   state.a
-      // }
-      return Object.assign({}, state, {
-        needsSync: false,
-        terrainmap: newmap
-      })
-    }
-
     case UNIT_ACTIONS.SET_ACTIVE_UNIT:
       return Object.assign({}, state, {
         activeUnit: action.activeUnit,

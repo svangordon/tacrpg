@@ -1,0 +1,32 @@
+combat system:
+
+(What do i like about FE? I like the RPS nature of it. But not as much as I like
+Banner Saga!)
+
+Ah, okay, logical extension of the idea: The player controls a party of adventurers,
+making its way through a series of linked portals, heading to the bottom of the dungeon
+or hell or whatever to fight satan or whatever. Game over on TPK, but option to
+get more party members b/w stages. Light RPG elements (xp, levelling, items, etc)
+
+Thoughts on stats:
+
+Like banner saga,
+{
+  strength: how much damage dealt; lowered by hp loss,
+  hp: damage until death,
+  armor: reduces hp damage, lowered by break,
+  speed: every 2 points of > speed reduces str by 1?
+}
+
+Gameplay idea:
+-- Each level is themed-ish, with one or two different kinds of enemies,
+a 'target' and a 'boss', both of which can be avoided (or maybe you have to do them?
+that makes more sense.) The levels can be maybe procedurally generated, but more
+likely not. Go for a goofy-serious retro kind of schtick.  Kind of like endless
+quest levels from nethack. Idea: have different kinds of missions (survive n turns,
+kill the rat king, escort vip). One map per mission type, and then you can skin
+over it
+
+Game idea: Something like "we become what we behold", but w/o the shitty moral at the end
+like you're a news editor, and you have to make decisions about what you do or don't
+publish, dealing with pressures like you want to keep your job.

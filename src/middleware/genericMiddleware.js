@@ -105,6 +105,7 @@ export const turnMiddleware = store => next => action => {
     // determines whether the square should render a move range square
       const width = 15
       const height = 13
+      const t1 = performance.now()
       action.moveSquares = state.battle.landmap.map((tile, i) => {
         if (tile === 1) {
           return {valid: false, path: null}
@@ -117,12 +118,20 @@ export const turnMiddleware = store => next => action => {
           coords(i).arr[0],
           coords(i).arr[1],
           pfGrid
-        )
+        ).map(coord => coords(coord).id)
         return {
           path,
           valid: path.length < state.battle.activeUnit.move + 2
         }
       })
+      const t2 = performance.now()
+      console.log('getting all move squares takes', t2 - t1, 'ms')
+      // const t3 = performance.now()
+      // const limit = state.battle.landmap.length
+      // for (let i = 0; i < limit; i++) {
+      //
+      // }
+      // const t4 = performance.now()
   }
 
   if (action.type === TURN_ACTIONS.SET_ATTACK_SQUARES) {

@@ -38,7 +38,9 @@ class TileContainer extends Component {
       && this.props.battle.moveSquares[tileId].valid
       && !this.props.battle.activeUnitMoved
     ) {
-        this.props.setMovePath(this.props.battle.moveSquares[tileId].path.map(tile => coords(tile).id))
+        // this.props.setMovePath(this.props.battle.moveSquares[tileId].path.map(tile => coords(tile).id))
+        // just send the destination square, we can figure out the movepath
+        this.props.setMovePath(tileId)
     }
     if (this.props.battle.showAttack && !this.props.battle.attackTarget.valid) {
       this.props.setAttackTarget(tileId)
