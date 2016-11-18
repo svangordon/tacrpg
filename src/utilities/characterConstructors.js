@@ -10,7 +10,12 @@ const knightData = {
   owner: 0,
   // position: 80,
   sprite: 114,
-  range: 1
+  range: 1,
+  move: 2,
+  strength: 2,
+  health: 3,
+  armor: 1,
+  speed: 1
 }
 
 const spearmanData = {
@@ -19,7 +24,12 @@ const spearmanData = {
   owner: 0,
   // position: 82,
   sprite: 113,
-  range: 1
+  range: 1,
+  move: 2,
+  strength: 2,
+  health: 3,
+  armor: 0,
+  speed: 2
 }
 
 const horseData = {
@@ -28,7 +38,12 @@ const horseData = {
   owner: 1,
   // position: 98,
   sprite: 110,
-  range: 2
+  range: 1,
+  move: 3,
+  strength: 2,
+  health: 3,
+  armor: 2,
+  speed: 1
 }
 
 const unitFactory = (unitData) => {
@@ -39,7 +54,7 @@ const unitFactory = (unitData) => {
       offset: tileGetter(unitData.sprite),
       moved: false,
       move: 3,
-      hp: 10,
+      hp: unitData.health,
       position
     })
   }

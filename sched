@@ -45,3 +45,44 @@ Needed:
 TODO: Rip stats, combat calculations from FE. Weapons weight? prolly not.
 
 Next
+
+Important things:
+-- Good cross browser support, and good mobile support
+-- maybe support for one-button gameplay
+-- simple gameplay that's easy to pick up
+-- if possible, some kind of upgrade sort of deal. or other way to
+get the user to keep clicking
+-- nice looking level of polish
+-- idea: the player plays as the leaders of various towns as they fight off a
+giant horde (or maybe player plays as horde). Earns points based on how well
+they do before they get destroyed (or more likely, for a set number of turns),
+spends those points on upgrades. Eventually, they repulse the invaders and start
+questing to destroy the horde instead. This sounds like an absolutely exceptional
+idea.
+
+todo:
+-- Find one or outlets for monetization. Either places I could license it to, or
+places I could post it to get paid off of my own adds (and probably jfc use react
+to defeat ad blocker, if you can)
+-- Look for mongol sprites or whatever
+  -- Instead, use sprites from one of the various nethack tilesets.
+Pretty good sense of what the final game looks like:
+  Player repulses hordes of monsters that come out of the forest (or from the
+  mountains, etc.)
+  Things needed:
+  -- Actual combat mechanics
+  -- Way of resolving things dieing
+  -- Monster sprites
+  -- Terrain
+
+Not to keep tweaking things, but how about every year a group of heroes must fight
+back a demonic incursion. Ah, every year, a group of heroes must use a portal to
+enter the netherworlds, slay / rescue something, and make it back. Upgrades b/w
+missions.
+
+Ah, okay, logical extension of the idea: The player controls a party of adventurers,
+making its way through a series of linked portals, heading to the bottom of the dungeon
+or hell or whatever to fight satan or whatever. Game over on TPK, but option to
+get more party members b/w stages. Light RPG elements (xp, levelling, items, etc)
+
+Thoughts on stats
