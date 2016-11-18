@@ -4,8 +4,8 @@ import {Grid, Row, Column} from 'react-cellblock'
 import LayerComponent from '../components/LayerComponent'
 import { tileGetter } from '../utilities/mapConstructor'
 import { clickTile } from '../actions/turnActions'
-import PF from 'pathfinding'
-import { setMovePath, setAttackTarget } from '../actions/turnActions'
+// import PF from 'pathfinding'
+import { setMovePath } from '../actions/turnActions'
 import { coords } from '../utilities/UtilityContainer'
 
 const mapStateToProps = (state) => {
@@ -19,9 +19,6 @@ const mapDispatchToProps = (dispatch) => {
     handleClickTile: (tile) => {
       dispatch(clickTile(tile))
     },
-    setAttackTarget: (tileId) => {
-      dispatch(setAttackTarget({position: tileId}))
-    },
     setMovePath: (path) => {
       dispatch(setMovePath(path))
     }
@@ -33,96 +30,6 @@ class TileContainer extends Component {
   constructor(props) {
     super(props)
     // this.tileGetter = tileGetter.bind(this, props.battle.terrainmap)
-  }
-
-  _renderUnits() {
-    let unit = this.props.battle.units.find(unit => unit.position === this.props.tile.id)
-    if (unit && this.props.battle.activeUnit && unit.id === this.props.battle.activeUnit.id) {
-      // don't render the active unit here
-      unit = null
-    }
-    if (this.props.battle.activeUnit && this.props.tile.id === this.props.battle.activeUnit.position) {
-      unit  = this.props.battle.activeUnit
-    }
-    if (unit) {
-      if (this.props.battle.activeUnit && unit.id === this.props.battle.activeUnit.id) {
-        console.log('bang')
-      }
-      console.log('unit.pos ==', unit.position)
-      return (
-        <LayerComponent
-          key={"unit"}
-          offset={unit.offset}
-          spriteScale={this.props.spriteScale}
-        />
-      )
-    }
-    return null
-  }
-
-  // determines whether the square should render a move range square
-  _renderMoveRange() {
-    if (!this.props.battle.activeUnit
-      || !this.props.battle.moveSquares
-      || this.props.battle.showAttack
-      || this.props.battle.activeUnitMoved) {
-      return null
-    }
-    if (this.props.battle.moveSquares[this.props.tile.id].valid) {
-      return (
-        <LayerComponent
-          key={"moveSquares"}
-          offset={[-64, -672]}
-          opacity={0.5}
-          spriteScale={this.props.spriteScale}
-        />
-      )
-    }
-    return null
-  }
-
-  _renderMovePath() {
-    if (
-      this.props.battle.activeUnit
-      && !this.props.battle.showAttack
-      && this.props.battle.movePath
-      && this.props.battle.movePath.some((path, i) => i !== 0 && String(coords(path).id) === String(this.props.tile.id))
-    ) {
-      return (
-        <LayerComponent
-          key={"movePath"}
-          offset={[-64, -672]}
-          opacity={1}
-          spriteScale={this.props.spriteScale}
-        />
-      )
-    }
-    // if (this.props.battle.movePath)
-    //   console.log(this.props.battle.movePath.map(xy => coords(xy)))
-    return null
-  }
-
-  _renderAttackRange() {
-    if (
-      this.props.battle.showAttack
-      // && this.props.battle.validTarget
-      && this.props.battle.activeUnit
-      && this.props.battle.attackSquares
-      && this.props.battle.attackSquares[this.props.tile.id].valid
-      // && this.props.battle.moveSquares[this.props.tile.id].path
-      // && this.props.battle.moveSquares[this.props.tile.id].path.length - 2 < this.props.battle.activeUnit.range
-    ) {
-      // console.log(this.props.battle.attackSquares,this.props.tile.id,this.props.battle.attackSquares[this.props.tile.id])
-      return (
-        <LayerComponent
-          key={"attackRange"}
-          offset={[-48, -672]}
-          opacity={1}
-          spriteScale={this.props.spriteScale}
-        />
-      )
-    }
-    return null
   }
 
   _handleHover(tileId) {

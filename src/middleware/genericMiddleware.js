@@ -41,7 +41,7 @@ export const unitMiddleware = store => next => action => {
     if (attacker.hp > 0) {
       store.dispatch(updateUnit(defender))
     }
-    // 
+    //
     // const missChance = Math.min(Math.max(defender.speed - attacker.speed, 0) / 10, 0.9)
     // const damage = attacker.strength - defender.armor
     // if (missChance < Math.random()) {
@@ -99,22 +99,16 @@ export const turnMiddleware = store => next => action => {
       tile => Number(!~tile.layers.land.data)
     )
     action.pfMap = pfMap
-    console.log('setSqMw sez', action)
   }
 
   if (action.type === TURN_ACTIONS.SET_MOVE_SQUARES) {
     // determines whether the square should render a move range square
-      if (!state.battle.activeUnit) {
-        console.log('reached what should be impossible position')
-        return null
-      }
       const width = 15
       const height = 13
       action.moveSquares = state.battle.landmap.map((tile, i) => {
         if (tile === 1) {
           return {valid: false, path: null}
         }
-        // console.log(pfMap)
         const pfGrid = new PF.Grid(state.battle.pfMap)
         const finder = new PF.AStarFinder()
         const path = finder.findPath(
@@ -134,10 +128,6 @@ export const turnMiddleware = store => next => action => {
   if (action.type === TURN_ACTIONS.SET_ATTACK_SQUARES) {
     const width = 15
     const height = 13
-    if (!state.battle.activeUnit) {
-      console.log('reached what should be impossible position')
-      return null
-    }
     const unitPos = []
     state.battle.units.forEach(unit => {
       unitPos[unit.position] = unit
@@ -166,17 +156,14 @@ export const turnMiddleware = store => next => action => {
       }
       return output
     })
-    // console.log('atkSqs', attackSquares)
     action.attackSquares = attackSquares
   }
 
   if (action.type === TURN_ACTIONS.FINISH_UNIT) {
-    console.log('finishing unit')
     if (state.battle.attackTarget.valid) {
       store.dispatch(resolveAttack())
     }
     store.dispatch(updateUnit(state.battle.activeUnit))
-    // console.log('unit is now at, is this sync?', state.battle.units.find(unit => unit.id === state.battle.activeUnit.id).position)
     if (
       state.battle.finishedUnits.reduce((accum, moveStatus) => {
         if (moveStatus) {
@@ -187,7 +174,6 @@ export const turnMiddleware = store => next => action => {
       state.battle.units.filter(unit => unit.owner === state.battle.activePlayer).length
     ) {
       // all of activeplayer's units have moved
-      console.log('should finish turn')
       action.finishTurn = true
     } /*else {
       console.log(state.battle.finishedUnits.reduce((accum, moveStatus) => {
@@ -210,7 +196,6 @@ export const clickMiddleware = store => next => action => {
   if (action.type === TURN_ACTIONS.CLICK_TILE) {
     // alert('bang')
     const clickedUnit = state.battle.units.find(unit => unit.position === action.tile)
-    console.log('clickedUnit', clickedUnit)
     // player clicked on unit
     if (clickedUnit) {
       // player clicked on own unit
@@ -243,8 +228,6 @@ export const clickMiddleware = store => next => action => {
       store.dispatch(setActiveUnit(newActiveUnit))
       store.dispatch(setActiveUnitMoved(true))
       store.dispatch(setAttackSquares())
-    } else {
-      console.log('base case')
     }
   }
   next(action)

@@ -5,7 +5,6 @@ import PF                               from 'pathfinding'
 
 import { setActiveUnit, moveUnit, syncUnits }      from '../actions/unitActions'
 import { setAttack, setPfMap }       from '../actions/turnActions'
-import BattleMapTileComponent           from '../components/BattleMapTileComponent'
 import TileContainer                    from './TileContainer'
 
 const mapStateToProps = (state) => {

@@ -22,7 +22,6 @@ function units(state = initialState, action) {
         activeUnit: action.activeUnit
       })
     case UNIT_ACTIONS.MOVE_UNIT:
-      console.log('reducer stat ==', state, 'action', action)
       return Object.assign({}, state, {
         player: state.player.map(oldUnit => {
           if (oldUnit.id !== state.activeUnit.id) {

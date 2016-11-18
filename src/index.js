@@ -52,7 +52,7 @@ const store = createStore(
   composeEnhancers(
     applyMiddleware(
       thunkMiddleware,
-      loggerMiddleware,
+      // loggerMiddleware,
       turnMiddleware,
       unitMiddleware,
       clickMiddleware

@@ -12,7 +12,6 @@ const initialState = {
 function turn(state = initialState, action) {
   switch (action.type) {
     case TURN_ACTIONS.FINISH_TURN:
-      console.log(state.activePlayer, state.activePlayer === 'player')
       return Object.assign({}, state, {
         turnCount: state.turnCount + 1,
         activePlayer: state.activePlayer === 'player' ? 'computer' : 'player',
