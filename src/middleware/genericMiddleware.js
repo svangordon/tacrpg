@@ -220,7 +220,7 @@ export const clickMiddleware = store => next => action => {
           )))
         }
       }
-    } else if (state.battle.moveSquares && state.battle.moveSquares[action.tile] && !state.battle.activeUnitMoved) {
+    } else if (state.battle.moveSquares && state.battle.moveSquares[action.tile].valid && !state.battle.activeUnitMoved) {
       // clicked on empty square, which is in moveSquares, w/ an unmoved activeUnit
       const newActiveUnit = Object.assign({}, state.battle.activeUnit, {
         position: action.tile
