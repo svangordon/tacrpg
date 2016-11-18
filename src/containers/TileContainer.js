@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {Grid, Row, Column} from 'react-cellblock'
 import LayerComponent from '../components/LayerComponent'
 import { tileGetter } from '../utilities/mapConstructor'
-import { clickTile } from '../actions/turnActions'
+import { clickTile, setAttackTarget } from '../actions/turnActions'
 // import PF from 'pathfinding'
 import { setMovePath } from '../actions/turnActions'
 import { coords } from '../utilities/UtilityContainer'
@@ -18,6 +18,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     handleClickTile: (tile) => {
       dispatch(clickTile(tile))
+    },
+    setAttackTarget: (tileId) => {
+      dispatch(setAttackTarget(tileId))
     },
     setMovePath: (path) => {
       dispatch(setMovePath(path))
