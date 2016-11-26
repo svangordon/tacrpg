@@ -5,6 +5,7 @@ import PF                               from 'pathfinding'
 
 import { setActiveUnit, moveUnit, syncUnits }      from '../actions/unitActions'
 import { setAttack, setPfMap }       from '../actions/turnActions'
+import { initAi, startAiTurn } from '../actions/aiActions'
 import TileContainer                    from './TileContainer'
 
 const mapStateToProps = (state) => {
@@ -18,9 +19,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // setActiveUnit: unit => {
-    //   dispatch(setActiveUnit(unit))
-    // },
+    startAiTurn: () => {
+      dispatch(startAiTurn())
+    },
     moveUnit: (unit, path) => {
       dispatch(moveUnit(unit, path))
     },
@@ -46,6 +47,9 @@ class BattleMapContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.battle.needsSync) {
       this.props.syncUnits()
+    }
+    if (this.props.battle.activePlayer === 0 && nextProps.battle.activePlayer === 1) {
+      this.props.startAiTurn()
     }
   }
 
@@ -98,6 +102,7 @@ BattleMapContainer.propTypes = {
   setActiveUnit: PropTypes.func,
   setAttack: PropTypes.func,
   setPfMap: PropTypes.func,
+  startAiTurn: PropTypes.func,
   syncUnits: PropTypes.func,
   turn: PropTypes.object,
   units: PropTypes.object

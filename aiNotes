@@ -1,0 +1,35 @@
+AI Procedure:
+
+AI will have two levels: "squad" and "individual". Go through all of the squads,
+determine the squads priorities, and then apply these to the individuals. I think
+that this works, b/c we don't really want a super cohesive plan from the monsters;
+they're not soldiers after all. Or I mean maybe they can have plans, but some of
+them are just monsters. Okay. So I think that we have a few predefined behaviors:
+
+individuals:
+  --Hunt
+  --Lurk
+  --Wander
+
+Squads:
+  --Patrol
+  --Attack
+  --Defend
+  --Rest/Loiter
+
+That sounds pretty good. So there's going to be an AI reducer. startAiTurn should
+fire; MW adds a constructed AI data object to the action. Wait, the MW actually
+is going to have to do a lot of this. So the event fires, the MW makes the data
+obj. then in MW, loop over
+
+Question: does it make more sense to store the info on the units, etc, in the units
+object? no. Let's store that all in the AI reducer. We'll have an 'init AI' action
+
+
+-- Fire event that triggers AI, then:
+
+1) maybe check for really important things that need to be taken care of immediately:
+  a. immediate win
+  b. immediate loss
+  c. but then again maybe not
+2)

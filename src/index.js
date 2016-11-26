@@ -21,6 +21,7 @@ import battleMap from './reducers/battleMapReducer'
 // import units from './reducers/unitsReducer'
 import turn from './reducers/turnReducer'
 import battle from './reducers/battleReducer'
+import ai from './reducers/aiReducer'
 
 // const store = createStore(
 //   combineReducers({
@@ -30,12 +31,7 @@ import battle from './reducers/battleReducer'
 // )
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const reducers = combineReducers({
-  // player,
-  // scene,
-  // schedule,
-  // battleMap,
-  // units,
-  // turn,
+  ai,
   battle,
   routing: routerReducer
 })
