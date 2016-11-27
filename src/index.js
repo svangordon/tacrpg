@@ -10,25 +10,16 @@ import { syncHistoryWithStore, routerReducer} from 'react-router-redux'
 require('es6-promise').polyfill()
 
 import App from './containers/app/index.js'
-// import InjuryTracker from './containers/InjuryTracker/InjuryTracker.js'
 import Home from './containers/Home/Home.js'
 
 import { customMiddleware, unitMiddleware, turnMiddleware, clickMiddleware } from './middleware/genericMiddleware'
-// import player from './reducers/playerReducer'
-// import scene from './reducers/sceneReducer'
-// import schedule from './reducers/scheduleReducer'
+import { aiMiddleware } from './middleware/aiMiddleware'
 import battleMap from './reducers/battleMapReducer'
 // import units from './reducers/unitsReducer'
 import turn from './reducers/turnReducer'
 import battle from './reducers/battleReducer'
 import ai from './reducers/aiReducer'
 
-// const store = createStore(
-//   combineReducers({
-//     test: TestReducer,
-//     routing: routerReducer
-//   })
-// )
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const reducers = combineReducers({
   ai,
@@ -37,11 +28,6 @@ const reducers = combineReducers({
 })
 
 const loggerMiddleware = createLogger()
-// const store = createStore(reducers, composeEnhancers(
-//   applyMiddleware(thunkMiddleware)
-// ))
-
-// console.log(customMiddleware)
 
 const store = createStore(
   reducers,
@@ -51,7 +37,8 @@ const store = createStore(
       // loggerMiddleware,
       turnMiddleware,
       unitMiddleware,
-      clickMiddleware
+      clickMiddleware,
+      aiMiddleware
     )
   )
 )

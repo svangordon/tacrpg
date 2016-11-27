@@ -137,7 +137,7 @@ function battle(state = initialState, action) {
         }
       }
       const t2 = performance.now()
-      console.log('original sync took', t2 - t1, 'ms')
+      // console.log('original sync took', t2 - t1, 'ms')
 
       // const t3 = performance.now()
       // const altmap = state.basemap.map(tile => Object.assign({}, tile, {layers: Object.assign({}, tile.layers)}))
