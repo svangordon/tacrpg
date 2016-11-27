@@ -120,7 +120,7 @@ function battle(state = initialState, action) {
       if (state.showAttack && !state.attackTarget.valid && state.attackSquares) {
         state.attackSquares.forEach((attackSquare, i) => {
           if (attackSquare.valid) {
-            newmap[i].layers.attack = {
+            newmap[i].layers.attack = { // attack range
               data: 298,
               name: 'square',
               offset: tileGetter(297),
@@ -130,7 +130,7 @@ function battle(state = initialState, action) {
         })
       }
       if (state.attackTarget.position && state.attackSquares[state.attackTarget.position].valid) {
-        newmap[state.attackTarget.position].layers.attack = {
+        newmap[state.attackTarget.position].layers.attack = { // attackTarget
           data: 298,
           name: 'square',
           offset: tileGetter(297),
