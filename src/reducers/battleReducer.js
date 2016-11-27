@@ -83,7 +83,8 @@ function battle(state = initialState, action) {
           data: unit.sprite,
           name: 'unit',
           offset: tileGetter(unit.sprite),
-          opacity: 1
+          opacity: 1,
+          unitId: unit.id
         }
         if (state.finishedUnits[unit.id]) { // finished move
           newmap[unitPosition].layers.moveStatus = {

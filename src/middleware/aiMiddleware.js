@@ -9,16 +9,22 @@ export const aiMiddleware = store => next => action => {
   const state = store.getState()
   if (action.type === AI_ACTIONS.START_AI_TURN) {
     // gather all the ai, sort into squads?
-    const beasts = []
     const squads = []
     const aiUnits = state.battle.units.filter(unit => unit.owner === 1)
     console.log('aiUnits ==', aiUnits)
-    aiUnits.forEach(unit => {
-      if (unit.beast) {
-        beasts.push(unit)
-      } //else, handle squads
-    })
-    store.dispatch(setBeasts(beasts))
+    const beasts = aiUnits.filter(unit => unit.beast)
+    // alright, so we're going to loop over the beasts array, and figure out what
+    // they're all doing.
+    const determineBeastAction = (beasts, battleMap) => {
+      const beastActions = beasts.map(beast => {
+        let beastMove = null
+        let beastAttack = null
+        if (beast.behavior === 'lurk') { //TODO: make a constant
+          //lurk behavior: gen all possible moves, pick one at random
+        }
+        return [beast, beastMove, beastAttack]
+      })
+    }
   }
   // if (action.type === AI_ACTIONS.SET_BEASTS) {
   //   // In theory, check to see if squads have been set and if so fire a 'start

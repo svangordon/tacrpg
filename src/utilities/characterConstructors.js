@@ -43,7 +43,9 @@ const horseData = {
   strength: 2,
   health: 3,
   armor: 2,
-  speed: 1
+  speed: 1,
+  beast: true,
+  behavior: 'lurk'
 }
 
 const unitFactory = (unitData) => {
