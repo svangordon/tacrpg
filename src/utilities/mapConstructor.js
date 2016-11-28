@@ -46,27 +46,20 @@ export const mapConstructor = (mapJSON) => {
 				terrainType
 			}
 			try {
-				const baseLayer = tile.layers[layer.name].terrainType.baseLayer
-				tile.layers.base = {
-					data: tile.layers[layer.name].terrainType.baseLayer,
-					name: 'base',
-					offset: tileGetter(baseLayer),
-					opacity: 1
+				const baseLayer = terrainType.properties.baseLayer
+				console.log(i, baseLayer, terrainType)
+				if (baseLayer !== -1) {
+					tile.layers.base = {
+						data: baseLayer,
+						name: 'base',
+						offset: tileGetter(baseLayer),
+						opacity: 1
+					}
 				}
 			} catch (e) {
-				console.log('thrown')
+				// if there's no base, we don't need to add
 			}
-			// if (tile.layers[layer.name].terrainType.baseLayer !== -1) {
-			// 	tile.layers.base = {
-			// 		data: tile.layers[layer.name].terrainType.baseLayer,
-			// 		name: 'base',
-			// 		offset: tileGetter(mapJSON.layers[k].data[i])
-			// 	}
-			// }
 		}
-		// if (i === 82) {
-		// 	console.trace('82 ==', tile)
-		// }
 	constructedMap.push(tile)
 	}
 	return constructedMap
