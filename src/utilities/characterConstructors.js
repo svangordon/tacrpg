@@ -15,7 +15,8 @@ const knightData = {
   strength: 2,
   health: 3,
   armor: 1,
-  speed: 1
+  speed: 1,
+  moveType: 'foot'
 }
 
 const spearmanData = {
@@ -29,7 +30,8 @@ const spearmanData = {
   strength: 2,
   health: 3,
   armor: 0,
-  speed: 2
+  speed: 2,
+  moveType: 'foot'
 }
 
 const horseData = {
@@ -45,7 +47,8 @@ const horseData = {
   armor: 2,
   speed: 1,
   beast: true,
-  behavior: 'lurk'
+  behavior: 'lurk',
+  moveType: 'mounted'
 }
 
 const unitFactory = (unitData) => {

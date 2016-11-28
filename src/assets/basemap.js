@@ -42,7 +42,7 @@ export const basemap = { "height":13,
                  "properties":
                     {
                      "baseLayer":-1,
-                     "moveCost":"{\"mounted\": 2,  \"foot\": 1}"
+                     "moveCost":"{\"mounted\": 1,  \"foot\": 1}"
                     },
                  "propertytypes":
                     {
