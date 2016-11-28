@@ -40,7 +40,6 @@ export const mapConstructor = (mapJSON) => {
 			}
 			try {
 				const baseLayer = terrainType.properties.baseLayer
-				console.log(i, baseLayer, terrainType)
 				if (baseLayer !== -1) {
 					tile.layers.base = {
 						data: baseLayer,
