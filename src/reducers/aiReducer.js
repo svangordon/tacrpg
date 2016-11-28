@@ -18,9 +18,6 @@ function ai(state = initialState, action) {
     }
     case AI_ACTIONS.SET_BEASTS: {
       const beasts = action.beasts
-      // const determineBeastAction = (beast) => {
-      //
-      // }
       return Object.assign({}, state, {
         beasts: action.beasts
       })

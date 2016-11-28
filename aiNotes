@@ -25,11 +25,14 @@ obj. then in MW, loop over
 Question: does it make more sense to store the info on the units, etc, in the units
 object? no. Let's store that all in the AI reducer. We'll have an 'init AI' action
 
-
--- Fire event that triggers AI, then:
-
-1) maybe check for really important things that need to be taken care of immediately:
-  a. immediate win
-  b. immediate loss
-  c. but then again maybe not
-2)
+thoughts: We really do want to have separate 'idle' and 'active' AI behaviors.
+Like we want the bugbear to hang around until the heroes come close, and then it
+springs into action and attacks. That means that we need to have some kind of
+vision thing. and that realistically means that we also need to have some kind
+of terrain thing as well. That also means that we need to start thinking about
+our pathfinding, and either writing something custom or modding PF. Oh actually
+PF should be modded anyway, so that it takes coordinates in the way that i'm
+doing them for the rest of the app. Okay, I'm sort of starting to suspect that I
+might be better off making my own PF thing anyway, b/c there's some optimization
+that I could get. Like I want the entire map to be converted into move paths,
+and I think that as it is we're wasting time by not caching some results.
