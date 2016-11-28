@@ -11,7 +11,16 @@ const initialState = {
 function pathfinding(state = initialState, action) {
   switch (action.type) {
     case PATHFINDING_ACTIONS.GET_MOVE_MAPS: {
-      console.log('getting move Maps')
+      console.log('getting move Maps', action)
+      const terrainmap = action.terrainmap
+      const units = action.units.map(unit => {
+        // generate a move map for the unit
+        // const getMoveCost = node =>
+        const movemap = []
+        const startNode = unit.position
+
+      })
+
       return Object.assign({}, state, {
         turnBegun: true
       })

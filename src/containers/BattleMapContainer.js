@@ -23,8 +23,8 @@ const mapDispatchToProps = (dispatch) => {
     startAiTurn: () => {
       dispatch(startAiTurn())
     },
-    getMoveMaps: () => {
-      dispatch(getMoveMaps())
+    getMoveMaps: (units, terrainmap) => {
+      dispatch(getMoveMaps(units, terrainmap))
     },
     moveUnit: (unit, path) => {
       dispatch(moveUnit(unit, path))
@@ -48,8 +48,8 @@ class BattleMapContainer extends Component {
     props.syncUnits()
   }
 
-  componentWillMount() {
-    this.props.getMoveMaps()
+  componentDidMount() {
+    this.props.getMoveMaps(this.props.battle.units, this.props.battle.terrainmap)
   }
 
   componentWillReceiveProps(nextProps) {
