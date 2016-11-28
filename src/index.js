@@ -18,13 +18,14 @@ import { aiMiddleware } from './middleware/aiMiddleware'
 import ai from './reducers/aiReducer'
 import battle from './reducers/battleReducer'
 import battleMap from './reducers/battleMapReducer'
-import move from './reducers/moveReducer'
+import pathfinding from './reducers/pathfindingReducer'
 import turn from './reducers/turnReducer'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const reducers = combineReducers({
   ai,
   battle,
+  pathfinding,
   routing: routerReducer
 })
 

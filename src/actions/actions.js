@@ -34,6 +34,6 @@ export const AI_ACTIONS = {
   START_AI_TURN: 'START_AI_TURN'
 }
 
-export const MOVE_ACTIONS = {
+export const PATHFINDING_ACTIONS = {
   GET_MOVE_MAPS: 'GET_MOVE_MAPS'
 }
