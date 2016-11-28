@@ -14,11 +14,12 @@ import Home from './containers/Home/Home.js'
 
 import { customMiddleware, unitMiddleware, turnMiddleware, clickMiddleware } from './middleware/genericMiddleware'
 import { aiMiddleware } from './middleware/aiMiddleware'
-import battleMap from './reducers/battleMapReducer'
 // import units from './reducers/unitsReducer'
-import turn from './reducers/turnReducer'
-import battle from './reducers/battleReducer'
 import ai from './reducers/aiReducer'
+import battle from './reducers/battleReducer'
+import battleMap from './reducers/battleMapReducer'
+import move from './reducers/moveReducer'
+import turn from './reducers/turnReducer'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const reducers = combineReducers({

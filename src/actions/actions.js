@@ -33,3 +33,7 @@ export const AI_ACTIONS = {
   SET_BEASTS: 'SET_BEASTS',
   START_AI_TURN: 'START_AI_TURN'
 }
+
+export const MOVE_ACTIONS = {
+  GET_MOVE_MAPS: 'GET_MOVE_MAPS'
+}

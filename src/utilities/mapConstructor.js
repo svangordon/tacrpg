@@ -50,7 +50,7 @@ export const mapConstructor = (mapJSON) => {
 					}
 				}
 			} catch (e) {
-				// if there's no base, we don't need to add
+				// if there's no base, we don't need to add base layer
 			}
 			tile.layers[layer.name] = {
 				data: layer.data[i] - firstgid,
