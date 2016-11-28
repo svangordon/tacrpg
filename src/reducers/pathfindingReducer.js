@@ -16,11 +16,12 @@ function pathfinding(state = initialState, action) {
       const movemaps = action.units.map(unit => {
         // generate a move map for the unit
         // const getMoveCost = node =>
-        const getMoveCost = node => { // move cost of entering a given node
+        const getNodeCost = node => { // move cost of entering a given node
+          console.log(terrainmap[node].layers.land.terrainType.properties.moveCost)
           const moveCost = JSON.parse(terrainmap[node].layers.land.terrainType.properties.moveCost)[unit.moveType]
           console.log(moveCost)
         }
-        getMoveCost(82)
+        getNodeCost(112)
         const movemap = []
         const startNode = unit.position
 

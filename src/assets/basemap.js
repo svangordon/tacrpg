@@ -56,12 +56,12 @@ export const basemap = { "height":13,
                  "properties":
                     {
                      "baseLayer":0,
-                     "moveCosts":"{\"foot\": 1, \"mounted\":2}"
+                     "moveCost":"{\"foot\": 1, \"mounted\": 2}"
                     },
                  "propertytypes":
                     {
                      "baseLayer":"int",
-                     "moveCosts":"string"
+                     "moveCost":"string"
                     },
                  "tile":-1
                 },
