@@ -29,25 +29,40 @@ export const mapConstructor = (mapJSON) => {
 			const layer = mapJSON.layers[k]
 			// const layerName = layer.name
 			const tileData = layer.data[i] - firstgid
-			let terrainTypeIndex
+			let terrainType
 			try {
-				terrainTypeIndex = tileData !== -1 ? mapJSON.tilesets[0].tiles[tileData]
+				const terrainTypeIndex = tileData !== -1 ? mapJSON.tilesets[0].tiles[tileData]
 					.terrain.find(terrainType => terrainType !== -1)
 				: null
+				terrainType = mapJSON.tilesets[0].terrains[terrainTypeIndex]
 			} catch (e) {
-				terrainTypeIndex = null
+				terrainType = null
 			}
-			// const terrainTypeIndex = tileData !== -1 ? mapJSON.tilesets[0].tiles[tileData]
-			// 	.terrain.find(terrainType => terrainType !== -1)
-			// : null
-			const terrainType = terrainTypeIndex ? mapJSON.tilesets[0].terrains[terrainTypeIndex] : null
-			tile.layers[mapJSON.layers[k].name] = {
-				data: mapJSON.layers[k].data[i] - firstgid,
-        name: mapJSON.layers[k].name,
-				offset: mapJSON.layers[k].data[i] - firstgid !== -1 ?	tileGetter(mapJSON.layers[k].data[i] - 1) : null,
+			tile.layers[layer.name] = {
+				data: layer.data[i] - firstgid,
+        name: layer.name,
+				offset: layer.data[i] - firstgid !== -1 ?	tileGetter(mapJSON.layers[k].data[i] - 1) : null,
 				opacity: 1,
 				terrainType
 			}
+			try {
+				const baseLayer = tile.layers[layer.name].terrainType.baseLayer
+				tile.layers.base = {
+					data: tile.layers[layer.name].terrainType.baseLayer,
+					name: 'base',
+					offset: tileGetter(baseLayer),
+					opacity: 1
+				}
+			} catch (e) {
+				console.log('thrown')
+			}
+			// if (tile.layers[layer.name].terrainType.baseLayer !== -1) {
+			// 	tile.layers.base = {
+			// 		data: tile.layers[layer.name].terrainType.baseLayer,
+			// 		name: 'base',
+			// 		offset: tileGetter(mapJSON.layers[k].data[i])
+			// 	}
+			// }
 		}
 		// if (i === 82) {
 		// 	console.trace('82 ==', tile)
