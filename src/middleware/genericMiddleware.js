@@ -102,36 +102,97 @@ export const turnMiddleware = store => next => action => {
   }
 
   if (action.type === TURN_ACTIONS.SET_MOVE_SQUARES) {
-    // determines whether the square should render a move range square
-      const width = 15
-      const height = 13
-      const t1 = performance.now()
-      action.moveSquares = state.battle.landmap.map((tile, i) => {
-        if (tile === 1) {
-          return {valid: false, path: null}
+
+    const getNeighborsId = (node) => {
+        //
+        //  . 0 .
+        //  1 * 2
+        //  . 3 .
+        //
+        const neighbors = []
+        neighbors[0] = node - width >= 0 ? node - width : null
+        neighbors[1] = node % width > 0 ? node - 1 : null
+        neighbors[2] = (node + 1) % width !== 0 ? node + 1 : null
+        neighbors[3] = node + width < mapLength ? node + width : null
+        return neighbors
+    }
+
+    const width = 15
+    const terrainmap = state.battle.terrainmap
+    const units = state.battle.units
+    const mapLength = terrainmap.length
+    const unit = state.battle.activeUnit
+
+    const setUnitHelperFn = (unit) => {
+      const moveType = unit.moveType
+      return (node) => {
+        const maptile = terrainmap[node]
+        try {
+          const moveCosts = JSON.parse(maptile.layers.land.terrainType.properties.moveCost)
+          // console.log(moveCosts[moveType])
+          return moveCosts[moveType]
+        } catch(e) {
+          return -1
         }
-        const pfGrid = new PF.Grid(state.battle.pfMap)
-        const finder = new PF.AStarFinder()
-        const path = finder.findPath(
-          state.battle.activeUnit.position % width,
-          Math.floor(state.battle.activeUnit.position / width),
-          coords(i).arr[0],
-          coords(i).arr[1],
-          pfGrid
-        ).map(coord => coords(coord).id)
-        return {
-          path,
-          valid: path.length < state.battle.activeUnit.move + 2
+      }
+    }
+
+    const unitHelperFn = setUnitHelperFn(unit)
+
+    const moveMap = Array(mapLength)
+
+    // The most simple implementation
+    const recursivelyGenMoveMap = (node) => {
+      // first iteration
+      if (moveMap[node] === undefined) {
+        moveMap[node] = [0, [node]]
+      }
+      const neighbors = getNeighborsId(node)
+      const curNode = moveMap[node]
+      neighbors.forEach(neighborNode => {
+        const neighborVal = moveMap[neighborNode]
+        const moveCost = unitHelperFn(neighborNode)
+        if (neighborNode === null) {
+          console.log('error here')
+          return
+        }
+        //  can move there       unit can afford move                  nieghbor moveMap not set or more expensive
+        if (moveCost !== -1 && moveCost + curNode[0] < unit.move  && (!neighborVal || neighborVal[0] > curNode[0] + moveCost)) {
+          // a place we can go, set the moveMap
+          moveMap[neighborNode] = [curNode[0] + 1, curNode[1].concat([neighborNode])]
+          // and then recurse
+          recursivelyGenMoveMap(neighborNode)
         }
       })
-      const t2 = performance.now()
-      console.log('getting all move squares takes', t2 - t1, 'ms')
-      // const t3 = performance.now()
-      // const limit = state.battle.landmap.length
-      // for (let i = 0; i < limit; i++) {
-      //
-      // }
-      // const t4 = performance.now()
+    }
+
+    recursivelyGenMoveMap(unit.position)
+
+    action.moveSquares = moveMap
+
+    // // determines whether the square should render a move range square
+    //   const width = 15
+    //   const height = 13
+    //   const t1 = performance.now()
+    //   action.moveSquares = state.battle.landmap.map((tile, i) => {
+    //     if (tile === 1) {
+    //       return {valid: false, path: null}
+    //     }
+    //     const pfGrid = new PF.Grid(state.battle.pfMap)
+    //     const finder = new PF.AStarFinder()
+    //     const path = finder.findPath(
+    //       state.battle.activeUnit.position % width,
+    //       Math.floor(state.battle.activeUnit.position / width),
+    //       coords(i).arr[0],
+    //       coords(i).arr[1],
+    //       pfGrid
+    //     ).map(coord => coords(coord).id)
+    //     return {
+    //       path,
+    //       valid: path.length < state.battle.activeUnit.move + 2
+    //     }
+    //   })
+    //   const t2 = performance.now()
   }
 
   if (action.type === TURN_ACTIONS.SET_ATTACK_SQUARES) {

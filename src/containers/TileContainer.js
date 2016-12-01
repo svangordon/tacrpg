@@ -38,7 +38,8 @@ class TileContainer extends Component {
   _handleHover(tileId) {
     if (this.props.battle.activeUnit
       && !this.props.battle.showAttack
-      && this.props.battle.moveSquares[tileId].valid
+      && this.props.battle.moveSquares[tileId]
+      && this.props.battle.moveSquares[tileId][0] !== -1 // i think this line is unnecessary
       && !this.props.battle.activeUnitMoved
     ) {
         // this.props.setMovePath(this.props.battle.moveSquares[tileId].path.map(tile => coords(tile).id))

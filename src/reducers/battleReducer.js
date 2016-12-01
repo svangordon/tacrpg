@@ -97,7 +97,7 @@ function battle(state = initialState, action) {
       })
       if (state.moveSquares && !state.activeUnitMoved) {
         state.moveSquares.forEach((moveSquare, i) => {
-          if (moveSquare.valid) {
+          if (moveSquare[0] !== -1) {
             newmap[i].layers.move = { // moveRange
               data: 298,
               name: 'square',
@@ -107,16 +107,16 @@ function battle(state = initialState, action) {
           }
         })
       }
-      if (state.movePath && !state.showAttack) {
-        state.moveSquares[state.movePath].path.forEach((moveSquare, i) => {
-          newmap[moveSquare].layers.move = { // movePath
-            data: 298,
-            name: 'square',
-            offset: tileGetter(298),
-            opacity: 1
-          }
-        })
-      }
+      // if (state.movePath && !state.showAttack) {
+      //   state.moveSquares[state.movePath].path.forEach((moveSquare, i) => {
+      //     newmap[moveSquare].layers.move = { // movePath
+      //       data: 298,
+      //       name: 'square',
+      //       offset: tileGetter(298),
+      //       opacity: 1
+      //     }
+      //   })
+      // }
       if (state.showAttack && !state.attackTarget.valid && state.attackSquares) {
         state.attackSquares.forEach((attackSquare, i) => {
           if (attackSquare.valid) {
