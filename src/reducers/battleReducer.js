@@ -9,6 +9,7 @@ const initialState = {
   activePlayer: 0,
   activeUnit: null,
   activeUnitMoved: false,
+  attackMap: null, // not squares current unit can attack, but a map of attack targets for possible move positions
   attackSquares: null,
   attackTarget: {},
   // basemap: basemap,
@@ -208,6 +209,7 @@ function battle(state = initialState, action) {
 
     case TURN_ACTIONS.SET_MOVE_SQUARES:
       return Object.assign({}, state, {
+        attackMap: action.attackMap,
         moveSquares: action.moveSquares,
         needsSync: true
       })

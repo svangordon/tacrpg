@@ -102,7 +102,6 @@ export const turnMiddleware = store => next => action => {
   }
 
   if (action.type === TURN_ACTIONS.SET_MOVE_SQUARES) {
-
     const getNeighborsId = (node) => {
         //
         //  . 0 .
@@ -137,15 +136,52 @@ export const turnMiddleware = store => next => action => {
       }
     }
 
+    const getAttackTargets = (node) => {
+      const attackMap = Array(mapLength)
+      attackMap[node] = 'start'
+    /*// for ranged attacks:
+      for (let i = 0; i < unit.range; i++) {
+        neighbors = neighbors.map(node => getNeighborsId(node))
+          .reduce((accum, curArr) => accum.concat(curArr), [])
+          //.deDupe it somehow
+      }
+    */
+    const neighbors = getNeighborsId(node)
+      .map(node => {
+        let result = null
+        try {
+          const unitId = state.battle.terrainmap[node].layers.unit.unitId
+          console.log('unitId ==', unitId)
+          const targetUnit = state.battle.units[unitId]
+          console.log(targetUnit.owner, unit.owner)
+          if (targetUnit.owner !== unit.owner) {
+            console.log('found attack')
+            result = [node, unitId] // unitId, square
+          } else {
+            result = null
+          }
+        } catch (e) {
+          // console.log('error == ', e)
+          return null
+        }
+        console.log('result ==', result)
+        return result
+      })
+      console.log('neighbors ==', neighbors)
+      return neighbors.some(node => node !== null) ? neighbors: null
+    }
+
     const unitHelperFn = setUnitHelperFn(unit)
 
     const moveMap = Array(mapLength)
+    const attackMap = Array(mapLength)
 
     // The most simple implementation
     const recursivelyGenMoveMap = (node) => {
       // first iteration
       if (moveMap[node] === undefined) {
         moveMap[node] = [0, [node]]
+        attackMap[node] = getAttackTargets(node)
       }
       const neighbors = getNeighborsId(node)
       const curNode = moveMap[node]
@@ -160,6 +196,8 @@ export const turnMiddleware = store => next => action => {
         if (moveCost !== -1 && moveCost + curNode[0] < unit.move  && (!neighborVal || neighborVal[0] > curNode[0] + moveCost)) {
           // a place we can go, set the moveMap
           moveMap[neighborNode] = [curNode[0] + 1, curNode[1].concat([neighborNode])]
+          // if there are attackers, set the attack map
+          attackMap[neighborNode] = getAttackTargets(neighborNode)
           // and then recurse
           recursivelyGenMoveMap(neighborNode)
         }
@@ -169,6 +207,7 @@ export const turnMiddleware = store => next => action => {
     recursivelyGenMoveMap(unit.position)
 
     action.moveSquares = moveMap
+    action.attackMap = attackMap
 
     // // determines whether the square should render a move range square
     //   const width = 15
