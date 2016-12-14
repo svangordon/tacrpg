@@ -25,6 +25,11 @@ export const aiMiddleware = store => next => action => {
         return [beast, beastMove, beastAttack]
       })
     }
+
+    aiUnits.forEach(aiUnit => {
+      store.dispatch(setActiveUnit(aiUnit))
+      console.log(state.battle.attackMap)
+    })
   }
   // if (action.type === AI_ACTIONS.SET_BEASTS) {
   //   // In theory, check to see if squads have been set and if so fire a 'start
